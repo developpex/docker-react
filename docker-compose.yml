@@ -1,0 +1,28 @@
+services:
+  web:
+    # build: . looking for a Dockerfile
+    # build: .
+    # we are using a Docker.dev file so
+    build:
+      # context is to see where we want the file to be pulled from
+      context: .
+      # witch dockerfile to use
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    volumes:
+      # saying do not try to map a folder to node_modules so we dont overwrite it
+      - /app/node_modules
+      # map . (current folder == workflow) to the /app folder
+      - .:/app
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    # override the command from the dockerfile
+    command: ["npm", "run", "test"]
+
+
